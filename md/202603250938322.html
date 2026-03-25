@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语音助手</title>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script> -->
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <script src="./vconsole.min.js"></script>
+    <style>
+        .recording-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #dc3545;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 10px rgba(220, 53, 69, 0);
+            }
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+            }
+        }
+        
+        .voice-wave {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .wave-bar {
+            width: 6px;
+            margin: 0 3px;
+            background-color: #0d6efd;
+            border-radius: 3px;
+            animation: wave 1s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% {
+                height: 10px;
+            }
+            50% {
+                height: 50px;
+            }
+        }
+        
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .user-message {
+            background-color: #0d6efd;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .assistant-message {
+            background-color: #f8f9fa;
+            color: #212529;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="mb-0">语音助手</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-container" id="chatContainer">
+                            <div class="message assistant-message">
+                                您好！我是您的语音助手，请点击下方按钮开始录音。
+                            </div>
+                        </div>
+                        
+                        <div class="voice-wave" id="voiceWave">
+                            <div class="wave-bar" style="animation-delay: 0s;"></div>
+                            <div class="wave-bar" style="animation-delay: 0.1s;"></div>
+                            <div class="wave-bar" style="animation-delay: 0.2s;"></div>
+                            <div class="wave-bar" style="animation-delay: 0.3s;"></div>
+                            <div class="wave-bar" style="animation-delay: 0.4s;"></div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <button id="recordButton" class="btn btn-primary btn-lg">
+                                <span id="recordingIndicator" class="recording-indicator me-2"></span>
+                                <span id="recordButtonText">开始录音</span>
+                            </button>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <div id="statusText" class="text-center text-muted"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查URL参数isdebug是否为1
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDebug = urlParams.get('isdebug');
+            // 仅在isdebug=1时初始化vConsole
+            if (isDebug === '1') {
+                // 初始化vConsole
+                const vConsole = new VConsole();
+                console.log('vConsole已初始化');
+            }
+
+            // 向父页面发送消息的辅助函数
+            function sendMessageToParent(type, data) {
+                if (window.parent !== window) {
+                    const message = {
+                        type: type,
+                        data: data,
+                        timestamp: Date.now()
+                    };
+                    // 在生产环境中，应该指定具体的origin而不是'*'
+                    window.parent.postMessage(message, '*');
+                    console.log('发送消息到父页面:', message);
+                } else {
+                    console.log('当前不在iframe中');
+                }
+            }
+
+            // 监听来自父页面的消息
+            window.addEventListener('message', function(event) {
+                console.log('收到来自父页面的消息:', event.data);
+
+                // 根据消息类型处理不同的事件
+                switch(event.data.type) {
+                    case 'startRecording':
+                        handleStartRecording(event.data);
+                        break;
+                    case 'stopRecording':
+                        handleStopRecording(event.data);
+                        break;
+                    default:
+                        console.log('未处理的消息类型:', event.data.type);
+                }
+            });
+
+            // 通知父页面iframe已就绪
+            setTimeout(function() {
+                sendMessageToParent('ready', { status: 'iframe已就绪' });
+            }, 1000);
+
+            // 处理问候消息
+            function handleGreeting(data) {
+                console.log('收到问候:', data.data);
+                addMessage('收到父页面消息: ' + data.data, 'assistant');
+                sendMessageToParent('greetingResponse', '你好！我是语音助手iframe');
+            }
+
+            // 处理开始录音消息
+            function handleStartRecording(data) {
+                console.log('收到开始录音指令:', data);
+                if (!isRecording) {
+                    startRecording();
+                }
+            }
+
+            // 处理停止录音消息
+            function handleStopRecording(data) {
+                console.log('收到停止录音指令:', data);
+                if (isRecording) {
+                    stopRecording();
+                }
+            }
+
+            // 处理获取状态消息
+            function handleGetStatus(data) {
+                console.log('收到获取状态指令:', data);
+                const status = {
+                    isRecording: isRecording,
+                    canRecord: 'mediaRecorder' in window || 'AudioContext' in window
+                };
+                sendMessageToParent('statusResponse', status);
+            }
+
+            const recordButton = document.getElementById('recordButton');
+            const recordingIndicator = document.getElementById('recordingIndicator');
+            const recordButtonText = document.getElementById('recordButtonText');
+            const statusText = document.getElementById('statusText');
+            const voiceWave = document.getElementById('voiceWave');
+            const chatContainer = document.getElementById('chatContainer');
+            
+            let mediaRecorder;
+            let audioChunks = [];
+            let isRecording = false;
+            
+            // 初始化语音波形动画
+            voiceWave.style.display = 'none';
+            
+            // 录音按钮点击事件
+            recordButton.addEventListener('click', function() {
+                if (!isRecording) {
+                    startRecording();
+                } else {
+                    stopRecording();
+                }
+            });
+            
+            // 开始录音
+            async function startRecording() {
+                try {
+                    // 请求麦克风权限
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    
+                    // 创建MediaRecorder实例
+                    mediaRecorder = new MediaRecorder(stream);
+                    
+                    // 处理数据可用事件
+                    mediaRecorder.ondataavailable = function(event) {
+                        if (event.data.size > 0) {
+                            audioChunks.push(event.data);
+                        }
+                    };
+                    
+                    // 处理录音停止事件
+                    mediaRecorder.onstop = function() {
+                        // 创建音频Blob
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        
+                        // 将Blob转换为File对象
+                        const audioFile = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
+                        
+                        // 发送音频到服务器
+                        uploadAudio(audioFile);
+                        
+                        // 清空音频数据
+                        audioChunks = [];
+                    };
+                    
+                    // 开始录音
+                    mediaRecorder.start();
+                    isRecording = true;
+                    
+                    // 更新UI状态
+                    recordingIndicator.style.display = 'inline-block';
+                    recordButtonText.textContent = '停止录音';
+                    statusText.textContent = '正在录音...';
+                    voiceWave.style.display = 'flex';
+                    
+                } catch (error) {
+                    console.error('获取麦克风权限失败:', error);
+                    statusText.textContent = '无法访问麦克风，请检查权限设置。';
+                    alert('无法访问麦克风，请检查权限设置。');
+                }
+            }
+            
+            // 停止录音
+            function stopRecording() {
+                if (mediaRecorder && isRecording) {
+                    mediaRecorder.stop();
+                    isRecording = false;
+                    
+                    // 更新UI状态
+                    recordingIndicator.style.display = 'none';
+                    recordButtonText.textContent = '开始录音';
+                    statusText.textContent = '正在处理音频...';
+                    voiceWave.style.display = 'none';
+                }
+            }
+            
+            // 上传音频到服务器
+            function uploadAudio(audioFile) {
+                const formData = new FormData();
+                formData.append('file', audioFile);
+
+                // 这里替换为实际的API端点
+                const apiUrl = 'http://237i9.rossai.cn:414/index.php/adminscm/AiAssistant/speechRecognition';
+
+                fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.code == '1') {
+                        // 成功获取语音识别结果
+                        const recognizedText = data.text;
+
+                        // 显示用户的问题
+                        addMessage(recognizedText, 'user');
+
+                        // 显示AI的回答
+                        if (data.text) {
+                            addMessage(data.text, 'assistant');
+                        }
+
+                        statusText.textContent = '识别完成';
+
+                        // 向父页面发送语音识别结果
+                        sendMessageToParent('speechResult', {
+                            text: recognizedText,
+                            error:'',
+                            timestamp: Date.now()
+                        });
+                    } else {
+                        statusText.textContent = '识别失败: ' + data.msg;
+                        console.error('语音识别失败:', data);
+
+                        // 向父页面发送错误信息
+                        sendMessageToParent('speechResult', {
+                            text:'',
+                            error: data.msg,
+                            timestamp: Date.now()
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('上传音频失败:', error);
+                    statusText.textContent = '上传音频失败，请重试。';
+                });
+            }
+            
+            // 添加消息到聊天界面
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}-message`;
+                messageDiv.textContent = text;
+                chatContainer.appendChild(messageDiv);
+                
+                // 滚动到底部
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        });
+    </script>
+</body>
+</html>
