@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250">
+  <style>
+    .t   { font-family: "Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif; }
+    .ttl { font-size:16px; font-weight:700; fill:#24292f; }
+    .tag { font-size:11px; font-weight:700; fill:#ffffff; }
+    .main{ font-size:14px; font-weight:600; fill:#24292f; }
+    .sub { font-size:12px; fill:#57606a; }
+    .note{ font-size:12px; fill:#6e7781; }
+  </style>
+
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8c959f"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="250" fill="#ffffff"/>
+  <text class="t ttl" x="30" y="34">技能是怎么被用起来的</text>
+
+  <!-- 步骤 1 -->
+  <rect x="30" y="62" width="200" height="76" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5"/>
+  <text class="t tag"  x="46" y="86">用户</text>
+  <text class="t main" x="46" y="110">说出需求</text>
+  <text class="t sub"  x="46" y="129">「帮我清理一下 C 盘」</text>
+
+  <path d="M234 100 L244 100" stroke="#8c959f" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- 步骤 2 -->
+  <rect x="250" y="62" width="200" height="76" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text class="t tag"  x="266" y="86">系统</text>
+  <text class="t main" x="266" y="110">自动匹配</text>
+  <text class="t sub"  x="266" y="129">比对 description</text>
+
+  <path d="M454 100 L464 100" stroke="#8c959f" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- 步骤 3 -->
+  <rect x="470" y="62" width="200" height="76" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text class="t tag"  x="486" y="86">加载</text>
+  <text class="t main" x="486" y="110">SKILL.md 正文</text>
+  <text class="t sub"  x="486" y="129">读到执行步骤</text>
+
+  <path d="M674 100 L684 100" stroke="#8c959f" stroke-width="2" marker-end="url(#a1)"/>
+
+  <!-- 步骤 4 -->
+  <rect x="690" y="62" width="180" height="76" rx="8" fill="#fff8c5" stroke="#9a6700" stroke-width="1.5"/>
+  <text class="t tag"  x="706" y="86">按需</text>
+  <text class="t main" x="706" y="110">取用打包资源</text>
+  <text class="t sub"  x="706" y="129">脚本可直接执行</text>
+
+  <!-- 手动调用分支 -->
+  <rect x="250" y="176" width="200" height="52" rx="8" fill="#f6f8fa" stroke="#d0d7de" stroke-width="1.5" stroke-dasharray="5 3"/>
+  <text class="t main" x="266" y="196">手动调用</text>
+  <text class="t sub"  x="266" y="215">在对话里写 /技能名</text>
+
+  <path d="M350 174 L350 144" stroke="#8c959f" stroke-width="2" stroke-dasharray="5 3" marker-end="url(#a1)"/>
+  <text class="t note" x="480" y="205">也可以绕过自动匹配，直接点名要哪个技能</text>
+</svg>
