@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250">
+  <style>
+    .t   { font-family: "Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif; }
+    .ttl { font-size:16px; font-weight:700; fill:#24292f; }
+    .tag { font-size:11px; font-weight:700; fill:#ffffff; }
+    .main{ font-size:14px; font-weight:600; fill:#24292f; }
+    .sub { font-size:12px; fill:#57606a; }
+    .note{ font-size:12px; fill:#9a6700; }
+  </style>
+
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#9a6700"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="250" fill="#ffffff"/>
+  <text class="t ttl" x="30" y="34">从零写一份 Skill 的四步</text>
+
+  <!-- 步骤 1 -->
+  <rect x="30" y="62" width="200" height="76" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text class="t tag"  x="46" y="86">1</text>
+  <text class="t main" x="46" y="110">确认用途</text>
+  <text class="t sub"  x="46" y="129">想清楚触发场景</text>
+
+  <path d="M234 100 L244 100" stroke="#8c959f" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- 步骤 2 -->
+  <rect x="250" y="62" width="200" height="76" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text class="t tag"  x="266" y="86">2</text>
+  <text class="t main" x="266" y="110">规划可复用内容</text>
+  <text class="t sub"  x="266" y="129">重复代码→scripts</text>
+  <text class="t sub"  x="266" y="147">参考文档→references</text>
+
+  <path d="M454 100 L464 100" stroke="#8c959f" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- 步骤 3 -->
+  <rect x="470" y="62" width="200" height="76" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text class="t tag"  x="486" y="86">3</text>
+  <text class="t main" x="486" y="110">建目录骨架</text>
+  <text class="t sub"  x="486" y="129">脚本一键生成</text>
+
+  <path d="M674 100 L684 100" stroke="#8c959f" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- 步骤 4 -->
+  <rect x="690" y="62" width="180" height="76" rx="8" fill="#fff8c5" stroke="#9a6700" stroke-width="1.5"/>
+  <text class="t tag"  x="706" y="86">4</text>
+  <text class="t main" x="706" y="110">填写 SKILL.md</text>
+  <text class="t sub"  x="706" y="129">补 frontmatter</text>
+
+  <!-- 迭代回路 -->
+  <path d="M760 138 C 760 172, 236 172, 236 138" fill="none" stroke="#9a6700" stroke-width="2"
+        stroke-dasharray="6 4" marker-end="url(#ar)"/>
+  <text class="t note" x="450" y="200">迭代：拿真实任务跑一遍，卡点与踩坑结论补回 SKILL.md</text>
+</svg>
