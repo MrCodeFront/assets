@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300">
+  <style>
+    .t   { font-family: "Microsoft YaHei","PingFang SC","Helvetica Neue",Arial,sans-serif; }
+    .ttl { font-size:16px; font-weight:700; fill:#24292f; }
+    .main{ font-size:14px; font-weight:600; fill:#24292f; }
+    .sub { font-size:12px; fill:#57606a; }
+    .hd  { font-size:12px; font-weight:600; fill:#6e7781; letter-spacing:.5px; }
+    .num { font-size:14px; font-weight:700; fill:#ffffff; }
+  </style>
+
+  <rect width="900" height="300" fill="#ffffff"/>
+  <text class="t ttl" x="30" y="34">三级渐进加载：只把「当前需要的」放进上下文</text>
+
+  <!-- 第 1 层 -->
+  <circle cx="58" cy="90" r="16" fill="#0969da"/>
+  <text class="t num" x="52" y="95">1</text>
+  <rect x="84" y="62" width="300" height="56" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="1.5"/>
+  <text class="t main" x="100" y="87">元数据：name + description</text>
+  <text class="t sub"  x="100" y="106">决定这个技能何时被触发</text>
+  <rect x="400" y="62" width="180" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="414" y="87">加载时机</text>
+  <text class="t main" x="414" y="106">始终在上下文中</text>
+  <rect x="596" y="62" width="274" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="610" y="87">上下文占用</text>
+  <text class="t main" x="610" y="106">约 100 词</text>
+
+  <!-- 第 2 层 -->
+  <circle cx="58" cy="170" r="16" fill="#1a7f37"/>
+  <text class="t num" x="52" y="175">2</text>
+  <rect x="84" y="142" width="300" height="56" rx="8" fill="#dafbe1" stroke="#1a7f37" stroke-width="1.5"/>
+  <text class="t main" x="100" y="167">SKILL.md 正文</text>
+  <text class="t sub"  x="100" y="186">执行步骤 + 关键结论</text>
+  <rect x="400" y="142" width="180" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="414" y="167">加载时机</text>
+  <text class="t main" x="414" y="186">技能触发时才加载</text>
+  <rect x="596" y="142" width="274" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="610" y="167">上下文占用</text>
+  <text class="t main" x="610" y="186">小于 5k 词</text>
+
+  <!-- 第 3 层 -->
+  <circle cx="58" cy="250" r="16" fill="#9a6700"/>
+  <text class="t num" x="52" y="255">3</text>
+  <rect x="84" y="222" width="300" height="56" rx="8" fill="#fff8c5" stroke="#9a6700" stroke-width="1.5"/>
+  <text class="t main" x="100" y="247">scripts / references / assets</text>
+  <text class="t sub"  x="100" y="266">脚本 · 参考文档 · 模板素材</text>
+  <rect x="400" y="222" width="180" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="414" y="247">加载时机</text>
+  <text class="t main" x="414" y="266">按需读取或执行</text>
+  <rect x="596" y="222" width="274" height="56" rx="8" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text class="t hd"   x="610" y="247">上下文占用</text>
+  <text class="t main" x="610" y="266">无上限</text>
+</svg>
