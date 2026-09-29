@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="460" viewBox="0 0 820 460" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <style>
+      .title { font-size:18px; font-weight:bold; fill:#0f766e; }
+      .lbl { font-size:13px; fill:#333; }
+      .sub { font-size:11px; fill:#666; }
+      .core { fill:#e6fffb; stroke:#1abc9c; stroke-width:2.5; }
+      .iface { fill:#fff; stroke:#6c5ce7; stroke-width:2; }
+      .db { fill:#fff; stroke:#0984e3; stroke-width:2; }
+    </style>
+  </defs>
+
+  <text x="410" y="30" text-anchor="middle" class="title">DBX 架构：多形态入口 → 统一核心 → 多数据库</text>
+
+  <!-- 核心 -->
+  <rect class="core" x="300" y="180" width="220" height="100" rx="12"/>
+  <text x="410" y="212" text-anchor="middle" class="lbl" font-weight="bold">DBX 核心 (Rust)</text>
+  <text x="410" y="232" text-anchor="middle" class="sub">Tauri 2 运行时</text>
+  <text x="410" y="250" text-anchor="middle" class="sub">连接管理 / 驱动 (sqlx, redis-rs…)</text>
+  <text x="410" y="268" text-anchor="middle" class="sub">查询引擎 / 安全管控</text>
+
+  <!-- 入口层 -->
+  <rect class="iface" x="40" y="60" width="150" height="55" rx="8"/>
+  <text x="115" y="84" text-anchor="middle" class="lbl">桌面 GUI 应用</text>
+  <text x="115" y="102" text-anchor="middle" class="sub">Vue3 + Tauri</text>
+
+  <rect class="iface" x="40" y="140" width="150" height="55" rx="8"/>
+  <text x="115" y="164" text-anchor="middle" class="lbl">Docker / Web</text>
+  <text x="115" y="182" text-anchor="middle" class="sub">localhost:4224</text>
+
+  <rect class="iface" x="40" y="220" width="150" height="55" rx="8"/>
+  <text x="115" y="244" text-anchor="middle" class="lbl">CLI (@dbx-app/cli)</text>
+  <text x="115" y="262" text-anchor="middle" class="sub">npm -g 安装</text>
+
+  <rect class="iface" x="40" y="300" width="150" height="55" rx="8"/>
+  <text x="115" y="324" text-anchor="middle" class="lbl">MCP Server</text>
+  <text x="115" y="342" text-anchor="middle" class="sub">npx @dbx-app/mcp-server</text>
+
+  <rect class="iface" x="40" y="380" width="150" height="55" rx="8"/>
+  <text x="115" y="404" text-anchor="middle" class="lbl">AI 助手 (内置)</text>
+  <text x="115" y="422" text-anchor="middle" class="sub">Claude/OpenAI/本地</text>
+
+  <!-- 入口到核心连线 -->
+  <line x1="190" y1="87" x2="298" y2="200" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="167" x2="298" y2="205" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="247" x2="298" y2="225" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="327" x2="298" y2="240" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="190" y1="407" x2="298" y2="255" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- 数据库层 -->
+  <rect class="db" x="600" y="60" width="170" height="50" rx="8"/>
+  <text x="685" y="89" text-anchor="middle" class="lbl">关系型</text>
+
+  <rect class="db" x="600" y="130" width="170" height="50" rx="8"/>
+  <text x="685" y="159" text-anchor="middle" class="lbl">Redis / MongoDB</text>
+
+  <rect class="db" x="600" y="200" width="170" height="50" rx="8"/>
+  <text x="685" y="229" text-anchor="middle" class="lbl">达梦 / Oracle / ClickHouse</text>
+
+  <rect class="db" x="600" y="270" width="170" height="50" rx="8"/>
+  <text x="685" y="299" text-anchor="middle" class="lbl">Kafka / RabbitMQ 等 MQ</text>
+
+  <rect class="db" x="600" y="340" width="170" height="50" rx="8"/>
+  <text x="685" y="369" text-anchor="middle" class="lbl">Nacos / etcd / 中间件</text>
+
+  <!-- 核心到数据库连线 -->
+  <line x1="520" y1="200" x2="598" y2="85" stroke="#0984e3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="520" y1="215" x2="598" y2="155" stroke="#0984e3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="520" y1="230" x2="598" y2="225" stroke="#0984e3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="520" y1="245" x2="598" y2="295" stroke="#0984e3" stroke-width="2" marker-end="url(#arrow)"/>
+  <line x1="520" y1="260" x2="598" y2="365" stroke="#0984e3" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <text x="410" y="445" text-anchor="middle" class="sub">紫色＝访问入口（含 Node.js 的 CLI 与 MCP Server）　蓝色＝后端数据库 / 中间件</text>
+</svg>
